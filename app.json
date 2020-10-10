@@ -1,0 +1,12 @@
+{
+  "name": "PaddlerApp",
+  "displayName": "PaddlerApp",
+  "expo": {
+    "name": "PaddlerApp",
+    "slug": "PaddlerApp",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
