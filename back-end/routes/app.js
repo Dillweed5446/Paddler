@@ -1,22 +1,27 @@
 const express = require('express');
 const app = express();
-const fetch   = require('node-fetch');
-const port = 3000;
+const axios = require('axios');
+const port = 3001;
+const initialEndPoint = require('./initial_get_call');
 
-const API = () => {app.get('/', function (req, res) {
-        var url = 'https://api.weather.gov/gridpoints/HFO/229,73';
-         
-        fetch(url)
-        .then(res => res.json())
-        .then(data => {
-            res.send({ data });
-        })
-        .catch(err => {
-            res.send(err);
-        });
-    });
+const waitForForecastEndpoint = async () => {
+    try {
+        let finalEndpoint = await initialEndPoint;
+        return finalEndpoint;
+    }
+    catch (e) {
+        console.log(e);
+        throw e;
+    }
 }
 
-app.listen(port, () => console.log(`App listening on port ${port}!`))
+waitForForecastEndpoint().then(result => {return result})
+                        .then(result => {
+                            axios.get(result)
+                            .then(response => console.log(response.data.properties.windSpeed))
+                            .catch(error => console.log(error))
+                        })
+                        .catch(error => console.log(error))
 
-module.exports = API;
+
+app.listen(port, () => console.log(`App listening on port ${port}!`))
